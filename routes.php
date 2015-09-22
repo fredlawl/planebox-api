@@ -4,7 +4,7 @@ $router->map('GET', '/', function() {
 	echo 'hello world';
 });
 
-$router->map('GET', '/data', function() {
+$router->map('POST', '/data', function() {
 	header('Content-Type: application/json');
 	header('HTTP/1.1 200 Ok!');
 
