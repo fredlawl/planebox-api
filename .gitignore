@@ -36,9 +36,9 @@
 ehthumbs.db
 Thumbs.db
 
-# PHP Storm #
-#############
-.idea
-
 # Extra #
 #########
+/vendor
+/node_modules
+.env
+.idea
