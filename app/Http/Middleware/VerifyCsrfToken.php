@@ -27,14 +27,16 @@ class VerifyCsrfToken extends BaseVerifier {
 	 */
 	protected function tokensMatch($request)
 	{
-		$token = $request->input('_token') ?: $request->session()->getToken();
+		//$token = $request->input('_token') ?: $request->session()->getToken();
+		//
+		//if ( ! $token && $header = $request->header('X-XSRF-TOKEN'))
+		//{
+		//	$token = $this->encrypter->decrypt($header);
+		//}
+		//
+		//return StringUtils::equals($request->session()->token(), $token);
 
-		if ( ! $token && $header = $request->header('X-XSRF-TOKEN'))
-		{
-			$token = $this->encrypter->decrypt($header);
-		}
-
-		return StringUtils::equals($request->session()->token(), $token);
+		return true;
 	}
 
 }
