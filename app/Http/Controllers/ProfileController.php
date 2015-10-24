@@ -93,15 +93,15 @@ class ProfileController extends Controller {
 	 */
 	public function update(Request $request, $id)
 	{
-		$user_created = $this->userRepository->update($request->all());
-
-		if ($user_created instanceof MessageBag) {
-			return response()
-				->json($user_created)
-				->setStatusCode(412, 'Invalid User');
-		}
-
-		return response()->json(['userId' => $user_created->id]);
+		//$user_created = $this->userRepository->update($request->all());
+		//
+		//if ($user_created instanceof MessageBag) {
+		//	return response()
+		//		->json($user_created)
+		//		->setStatusCode(412, 'Invalid User');
+		//}
+		//
+		//return response()->json(['userId' => $user_created->id]);
 	}
 
 	/**
