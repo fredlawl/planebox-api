@@ -16,7 +16,7 @@ class PlaneBoxModel extends Model {
 	}
 
 	public function isValid () {
-		$validator = Validator::make($this->attributesToArray(), $this->validation_rules);
+		$validator = Validator::make($this->attributes, $this->validation_rules);
 		return $this->validate($validator);
 	}
 

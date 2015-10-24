@@ -13,8 +13,13 @@ class UserRepository {
 		if (!$user->isValid())
 			return $user->getValidationErrors();
 
+		$user->password = bcrypt($data['password']);
 		$user->save();
-		return true;
+		return $user;
+	}
+
+	public function update (array $data, $id) {
+
 	}
 
 }

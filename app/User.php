@@ -42,7 +42,7 @@ class User extends PlaneBoxModel implements AuthenticatableContract, CanResetPas
 	protected $validation_rules = [
 		'name' => 'required|max:255',
 		'email' => 'required|email|max:255|unique:users',
-		'password' => 'required|confirmed|min:6',
+		'password' => 'required|min:6',
 		'age' => 'required',
 		'occupation' => 'required',
 		'gender' => 'required'

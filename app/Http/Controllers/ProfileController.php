@@ -52,7 +52,15 @@ class ProfileController extends Controller {
 				->setStatusCode(412, 'Invalid User');
 		}
 
-		return response()->json(['success']);
+		$id = $user_created->id;
+		return response()
+			->json([
+				'id' => $id,
+				'uri' => url('profile', [
+					'id' => $id
+				])
+			])
+			->setStatusCode(201);
 	}
 
 	/**
@@ -83,9 +91,17 @@ class ProfileController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Request $request, $id)
 	{
-		//
+		$user_created = $this->userRepository->update($request->all());
+
+		if ($user_created instanceof MessageBag) {
+			return response()
+				->json($user_created)
+				->setStatusCode(412, 'Invalid User');
+		}
+
+		return response()->json(['userId' => $user_created->id]);
 	}
 
 	/**
