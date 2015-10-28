@@ -6,6 +6,7 @@ use App\Services\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\MessageBag;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProfileController extends Controller {
 
@@ -53,13 +54,14 @@ class ProfileController extends Controller {
 		}
 
 		$id = $user_created->id;
+		$token = JWTAuth::fromUser($user_created);
 		return response()
 			->json([
 				'id' => $id,
 				'uri' => url('profile', [
 					'id' => $id
 				])
-			])
+			] + compact('token'))
 			->setStatusCode(201);
 	}
 

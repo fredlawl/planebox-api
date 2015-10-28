@@ -11,12 +11,12 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
-Route::get('home', 'HomeController@index');
-
 Route::resource('profile', 'ProfileController');
 
 Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController'
+	'auth' => 'AuthController'
 ]);
+//Route::controllers([
+//	'auth' => 'Auth\AuthController',
+//	'password' => 'Auth\PasswordController'
+//]);
