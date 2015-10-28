@@ -1,8 +1,5 @@
 <?php
 
-// @todo: remove later; quick hax
-header("Access-Control-Allow-Origin: *");
-
 /**
  * Laravel - A PHP Framework For Web Artisans
  *

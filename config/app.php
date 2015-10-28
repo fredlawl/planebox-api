@@ -146,7 +146,7 @@ return [
 		'App\Providers\RouteServiceProvider',
 
 		'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
-		'Barryvdh\Cors\ServiceProvider'
+		//'Barryvdh\Cors\ServiceProvider'
 
 	],
 

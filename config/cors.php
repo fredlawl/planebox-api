@@ -16,7 +16,7 @@ return [
     'allowedHeaders' => ['*'],
     'allowedMethods' => ['GET', 'POST', 'PUT',  'DELETE'],
     'exposedHeaders' => [],
-    'maxAge' => 0,
+    'maxAge' => 3600,
     'hosts' => [],
 ];
 
