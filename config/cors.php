@@ -17,9 +17,6 @@ return [
     'allowedMethods' => ['GET', 'POST', 'PUT',  'DELETE'],
     'exposedHeaders' => [],
     'maxAge' => 0,
-    'hosts' => [
-		'srv01.fredlawl.com',
-		'*.local'
-	],
+    'hosts' => [],
 ];
 
