@@ -54,7 +54,7 @@ return [
 	|
 	*/
 
-	'from' => ['address' => null, 'name' => null],
+	'from' => ['address' => 'noreply@planeboxapi.azurewebsites.net', 'name' => 'No Reply'],
 
 	/*
 	|--------------------------------------------------------------------------

@@ -7,9 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Services\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Password;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Auth\Passwords\PasswordBroker;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+
 
 class AuthController extends Controller {
 
@@ -41,7 +44,6 @@ class AuthController extends Controller {
 
 		$response = $broker->sendResetLink($credentials, function($m) {
 			$m->subject('Reset Password');
-			$m->sender('noreply@planeboxapi.azurewebsites.net', 'No Reply');
 		});
 
 		switch ($response)
@@ -57,12 +59,35 @@ class AuthController extends Controller {
 	}
 
 
-	//public function postPassword (Request $request) {
-	//	$credentials = $request->only('email');
-	//
-	//	Validator::make($credentials, [
-	//		'email' => 'required|email'
-	//	]);
-	//}
+	public function putPassword (Request $request) {
+		$credentials = $request->only('email', 'password', 'password_confirmation', 'token');
+
+		$validator = Validator::make($credentials, [
+			'email'	=> 'required|email|max:255',
+			'password' => 'required|confirmed|min:6',
+			'token' => 'required'
+		]);
+
+		if ($validator->fails()) {
+			return response()
+				->json($validator->messages())
+				->setStatusCode(412, 'Invalid Passwords');
+		}
+
+		$response = Password::reset($credentials, function ($user, $password) {
+			$this->resetPassword($user, $password);
+		});
+
+		switch ($response) {
+			case Password::PASSWORD_RESET:
+				return response()->json('Password successfuly reset!');
+
+			default:
+				return response()
+					->json(trans($response))
+					->setStatusCode(412, 'Invalid Passwords');
+		}
+
+	}
 
 }
