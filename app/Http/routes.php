@@ -13,6 +13,18 @@
 
 Route::resource('profile', 'ProfileController');
 
+//Route::resource('data', 'DataController');
+Route::get('data', [
+	'middleware' => 'simpleauth',
+	'uses' => 'DataController@index'
+]);
+
+Route::post('data', [
+	'uses' => 'DataController@store'
+]);
+
+
+
 Route::controllers([
 	'auth' => 'AuthController'
 ]);
