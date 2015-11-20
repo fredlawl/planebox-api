@@ -13,29 +13,30 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class DataController extends Controller {
 
 	private $userRepository;
-	private $dataRepository;
+	private $statRepository;
 
-	public function __construct (UserRepository $userRepository, DataRepository $dataRepository) {
+	public function __construct (UserRepository $userRepository, StatRepository $statRepository) {
 		$this->userRepository = $userRepository;
-		$this->dataRepository = $dataRepository;
+		$this->statRepository = $statRepository;
 	}
 
 
 	public function index()
 	{
-		$items = $this->dataRepository->fetchAll();
+		$items = $this->statRepository->fetchAll();
 		$table = [];
 
 		foreach ($items as $item) {
-			$user = $item->user()->first();
+			$session = $item->gameSession()->first();
+			$user = $session->user()->first();
 
-			$user_info = array(
+			$user_info = [
 				'name' => '',
 				'email' => '',
 				'occupation' => '',
 				'age' => '',
 				'gender' => ''
-			);
+			];
 
 			if (!empty($user)) {
 				$user_info['name'] = $user->name;
@@ -45,19 +46,60 @@ class DataController extends Controller {
 				$user_info['gender'] = $user->gender;
 			}
 
-			$table[] = array(
-				'session' => $item->session,
-				'category' => $item->category,
-				'difficulty' => $item->difficulty,
+			$session_info = [
+				'session' => $session->session,
+				'category' => $session->category,
+				'difficulty' => $session->difficulty,
 
-				'city' => $item->city,
-				'state' => $item->state,
-				'zip' => $item->zip,
-				'country' => $item->country
-			) + $user_info;
+				'city' => $session->city,
+				'state' => $session->state,
+				'zip' => $session->zip,
+				'country' => $session->country
+			];
+
+			$level_info = [
+				'level' => $item->level,
+				'won' => $item->won,
+				'time_taken' => $item->time_taken,
+				'clicks' => $item->clicks
+			];
+
+			$table[] = $session_info + $level_info + $user_info;
 		}
 
-		return response()->json($table);
+		$content = "";
+		$rowLen = count($table);
+		$colLen = count($table[0]);
+
+		// Print out column headers
+		$columns = array_keys($table[0]);
+		for ($i = 0; $i < $colLen; $i++) {
+			$content .= $columns[$i];
+			if ($i < $colLen - 1) {
+				$content .= ",";
+			}
+		}
+		$content .= "\r\n";
+
+		// Print out data
+		for ($i = 0; $i < $rowLen; $i++) {
+			$row = $table[$i];
+			$col_count = 0;
+
+			foreach ($row as $column) {
+				$content .= '"' . $column . '"';
+				$col_count++;
+
+				if ($col_count < $colLen) {
+					$content .= ',';
+				}
+			}
+
+			$content .= "\r\n";
+		}
+
+		return response($content)->header('Content-Type', 'text/csv');
+
 	}
 
 

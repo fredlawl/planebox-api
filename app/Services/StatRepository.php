@@ -31,4 +31,8 @@ class StatRepository {
 		return false;
 	}
 
+	public function fetchAll () {
+		return Stat::all();
+	}
+
 }

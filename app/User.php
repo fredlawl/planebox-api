@@ -48,4 +48,8 @@ class User extends PlaneBoxModel implements AuthenticatableContract, CanResetPas
 		'gender' => 'required'
 	];
 
+	public function getGenderAttribute ($value) {
+		return ($value === 1) ? 'Male' : 'Female';
+	}
+
 }

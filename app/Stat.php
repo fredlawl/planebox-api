@@ -22,7 +22,11 @@ class Stat extends PlaneBoxModel {
 	protected $validation_rules = [];
 
 	public function gameSession () {
-		return $this->belongsTo('App\Data', 'session');
+		return $this->belongsTo('App\Data', 'session', 'session');
+	}
+
+	public function getTimeTakenAttribute ($value) {
+		return date('H:i:s', $value);
 	}
 
 }
