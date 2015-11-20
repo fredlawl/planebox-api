@@ -18,8 +18,8 @@ class CreatePictureStatsTable extends Migration {
 
 			$table->string('category');
 			$table->string('picture');
-			$table->boolean('won');
-			$table->boolean('lost');
+			$table->bigInteger('won', false, true);
+			$table->bigInteger('lost', false, true);
 
 			$table->index('picture');
 			$table->index('category');

@@ -31,4 +31,8 @@ class PictureStatRepository {
 		return false;
 	}
 
+	public function fetchAll () {
+		return PictureStat::all();
+	}
+
 }

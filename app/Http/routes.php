@@ -19,6 +19,11 @@ Route::get('data', [
 	'uses' => 'DataController@index'
 ]);
 
+Route::get('data/picture_stats', [
+	'middleware' => 'simpleauth',
+	'uses' => 'DataController@pictureStats'
+]);
+
 Route::post('data', [
 	'uses' => 'DataController@store'
 ]);

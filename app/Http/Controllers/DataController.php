@@ -2,8 +2,10 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\PictureStat;
 use App\Services\StatRepository;
 use App\Services\UserRepository;
+use App\Services\PictureStatRepository;
 use App\Services\DataRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -12,12 +14,15 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class DataController extends Controller {
 
-	private $userRepository;
 	private $statRepository;
+	private $pictureStatRepository;
 
-	public function __construct (UserRepository $userRepository, StatRepository $statRepository) {
-		$this->userRepository = $userRepository;
+	public function __construct (
+		StatRepository $statRepository,
+		PictureStatRepository $pictureStatRepository
+	) {
 		$this->statRepository = $statRepository;
+		$this->pictureStatRepository = $pictureStatRepository;
 	}
 
 
@@ -98,7 +103,50 @@ class DataController extends Controller {
 			$content .= "\r\n";
 		}
 
-		return response($content)->header('Content-Type', 'text/csv');
+		return response($content)
+			->header('Content-Type', 'text/csv')
+			->header('Content-Disposition', 'attachment; filename="PlaneBox User Data.csv"');
+
+	}
+
+
+	public function pictureStats()
+	{
+		$items = $this->pictureStatRepository->fetchAll();
+
+		$content = "";
+		$columns = array_keys($items->first()->attributesToArray());
+		$colLen = count($columns);
+
+		// Print out column headers
+		for ($i = 0; $i < $colLen; $i++) {
+			$content .= $columns[$i];
+			if ($i < $colLen - 1) {
+				$content .= ",";
+			}
+		}
+		$content .= "\r\n";
+
+		// Print out data
+		foreach ($items as $row) {
+			$col_count = 0;
+			$data = $row->attributesToArray();
+
+			foreach ($data as $column) {
+				$content .= '"' . $column . '"';
+				$col_count++;
+
+				if ($col_count < $colLen) {
+					$content .= ',';
+				}
+			}
+
+			$content .= "\r\n";
+		}
+
+		return response($content)
+			->header('Content-Type', 'text/csv')
+			->header('Content-Disposition', 'attachment; filename="PlaneBox Picture Data.csv"');
 
 	}
 
