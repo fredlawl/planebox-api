@@ -14,15 +14,16 @@ class Data extends PlaneBoxModel {
 		'zip',
 		'country',
 		'category',
-		'difficulty'
+		'difficulty',
+		'session'
 	];
 
-	protected $guarded = ['id', 'session'];
+	protected $guarded = ['id'];
 
 	protected $hidden = [];
 
 	protected $validation_rules = [
-		'session' => 'required|unique'
+		'session' => 'required'
 	];
 
 	public function stats () {

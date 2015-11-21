@@ -11,18 +11,25 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\MessageBag;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Test\Providers\JWT\JWTManagerTest;
 
 class DataController extends Controller {
 
 	private $statRepository;
 	private $pictureStatRepository;
+	private $dataRepository;
+	private $userRepository;
 
 	public function __construct (
 		StatRepository $statRepository,
-		PictureStatRepository $pictureStatRepository
+		PictureStatRepository $pictureStatRepository,
+		DataRepository $dataRepository,
+		UserRepository $userRepository
 	) {
 		$this->statRepository = $statRepository;
 		$this->pictureStatRepository = $pictureStatRepository;
+		$this->dataRepository = $dataRepository;
+		$this->userRepository = $userRepository;
 	}
 
 
@@ -151,9 +158,73 @@ class DataController extends Controller {
 	}
 
 
-	public function store(Request $request)
-	{
-		//  ... store data
+	/**
+	 * Create Session for FE
+	 * @param Request $request
+	 */
+
+	public function createSession (Request $request) {
+		$session = md5(time());
+		$token = '';
+		$create = $request->all();
+		$create['session'] = $session;
+
+		if (!empty($create['token'])) {
+			$token = $create['token'];
+			$create['user_id'] = 0; // todo: change this to actual user id
+			unset($create['token']);
+		}
+
+		$data = $this->dataRepository->insert($create);
+
+		if ($data instanceof MessageBag) {
+			return response()
+				->json($data)
+				->setStatusCode(412, 'Invalid session create');
+		}
+
+		return response()->json([
+			'session' => $session
+		])->setStatusCode(200, 'Session created');
+	}
+
+
+	/**
+	 * Save level data after level completion
+	 * @param Request $request
+	 */
+
+	public function onLevelComplete ($session, Request $request) {
+		$stats = $request->all();
+		$stats['session'] = $session;
+
+		$update = $this->statRepository->insert($stats);
+		if ($update instanceof MessageBag) {
+			return response()
+				->json($update)
+				->setStatusCode(412, 'Invalid stat stuff');
+		}
+
+		return response()->json([])->setStatusCode(200, 'Stats saved');
+	}
+
+
+	/**
+	 * Save picture data I guess?
+	 * @param Request $request
+	 */
+
+	public function pictureSave (Request $request) {
+		$stats = $request->all();
+
+		$update = $this->pictureStatRepository->insert($stats);
+		if ($update instanceof MessageBag) {
+			return response()
+				->json($update)
+				->setStatusCode(412, 'Invalid stat stuff');
+		}
+
+		return response()->json([])->setStatusCode(200, 'Picture Stats saved');
 	}
 
 }

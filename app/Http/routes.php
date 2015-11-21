@@ -25,7 +25,17 @@ Route::get('data/picture_stats', [
 ]);
 
 Route::post('data', [
-	'uses' => 'DataController@store'
+	'uses' => 'DataController@createSession'
+]);
+
+Route::put('data/{session}', [
+	'uses' => 'DataController@onLevelComplete'
+])->where([
+	'session' => '[a-zA-Z0-9]{32}+'
+]);
+
+Route::post('data/picture', [
+	'uses' => 'DataController@pictureSave'
 ]);
 
 

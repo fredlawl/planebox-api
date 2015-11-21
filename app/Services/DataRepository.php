@@ -10,14 +10,14 @@ use App\PictureStat;
 class DataRepository {
 
 	public function insert (array $data) {
-		$data = new Data();
-		$data->fill($data);
+		$session = new Data();
+		$session->fill($data);
 
-		if (!$data->isValid())
-			return $data->getValidationErrors();
+		if (!$session->isValid())
+			return $session->getValidationErrors();
 
-		$data->save();
-		return $data;
+		$session->save();
+		return $session;
 	}
 
 	public function update ($session, array $data) {

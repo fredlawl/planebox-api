@@ -10,14 +10,26 @@ use App\PictureStat;
 class PictureStatRepository {
 
 	public function insert (array $data) {
-		$data = new PictureStat();
-		$data->fill($data);
+		$stat = PictureStat::firstOrCreate([
+			'category' => $data['category'],
+			'picture' => $data['picture']
+		]);
 
-		if (!$data->isValid())
-			return $data->getValidationErrors();
+		if ($data['won'] == '1') {
+			$data['won'] = $stat->won + 1;
+			$data['lost'] = $stat->lost;
+		} else {
+			$data['lost'] = $stat->lost + 1;
+			$data['won'] = $stat->won;
+		}
 
-		$data->save();
-		return $data;
+		$stat->fill($data);
+
+		if (!$stat->isValid())
+			return $stat->getValidationErrors();
+
+		$stat->save();
+		return $stat;
 	}
 
 	public function update ($session, $level, array $data) {
