@@ -165,14 +165,16 @@ class DataController extends Controller {
 
 	public function createSession (Request $request) {
 		$session = md5(time());
-		$token = '';
 		$create = $request->all();
 		$create['session'] = $session;
 
-		if (!empty($create['token'])) {
-			$token = $create['token'];
-			$create['user_id'] = 0; // todo: change this to actual user id
-			unset($create['token']);
+		$token = JWTAuth::getToken();
+
+		if ($token) {
+			$user = JWTAuth::authenticate($token);
+			if ($user != false) {
+				$create['user_id'] = $user->id;
+			}
 		}
 
 		$data = $this->dataRepository->insert($create);
