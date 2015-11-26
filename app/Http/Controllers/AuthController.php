@@ -75,7 +75,8 @@ class AuthController extends Controller {
 		}
 
 		$response = Password::reset($credentials, function ($user, $password) {
-			$this->resetPassword($user, $password);
+			$user->password = bcrypt($password);
+			$user->save();
 		});
 
 		switch ($response) {
