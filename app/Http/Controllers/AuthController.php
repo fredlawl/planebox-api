@@ -59,7 +59,7 @@ class AuthController extends Controller {
 	}
 
 
-	public function putPassword (Request $request) {
+	public function anyPassword (Request $request) {
 		$credentials = $request->only('email', 'password', 'password_confirmation', 'token');
 
 		$validator = Validator::make($credentials, [
