@@ -171,9 +171,13 @@ class DataController extends Controller {
 		$token = JWTAuth::getToken();
 
 		if ($token) {
-			$user = JWTAuth::authenticate($token);
-			if ($user != false) {
-				$create['user_id'] = $user->id;
+			try {
+				$user = JWTAuth::authenticate($token);
+				if ($user != false) {
+					$create['user_id'] = $user->id;
+				}
+			} catch (\Exception $e) {
+
 			}
 		}
 
