@@ -1,1 +1,3 @@
-Click here to reset your password: {{ url('auth/password/'.$token) }}
+Copy/paste the following token into the password reset page.
+
+<pre>{{ $token }}</pre>
