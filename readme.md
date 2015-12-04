@@ -53,5 +53,4 @@ Creative Commons Legal Code
 
 Attribution-NonCommercial-NoDerivs 3.0 Unported
 
-
 Laravel falls under the MIT License
