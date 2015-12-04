@@ -4,7 +4,7 @@ use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class simpleAuthMiddleware {
+class SimpleAuthMiddleware {
 
 	/**
 	 * Handle an incoming request.
