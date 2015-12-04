@@ -38,9 +38,12 @@ class DataController extends Controller {
 		$items = $this->statRepository->fetchAll();
 		$table = [];
 
+    $prev = '';
 		foreach ($items as $item) {
 			$session = $item->gameSession()->first();
-      error_log(print_r($session, 1));
+      if (is_null($session)) {
+        continue;
+      }
 			$user = $session->user()->first();
 
 			$user_info = [
