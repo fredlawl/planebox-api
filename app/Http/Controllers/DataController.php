@@ -40,6 +40,7 @@ class DataController extends Controller {
 
 		foreach ($items as $item) {
 			$session = $item->gameSession()->first();
+      error_log(print_r($session, 1));
 			$user = $session->user()->first();
 
 			$user_info = [
